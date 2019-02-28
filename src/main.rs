@@ -31,6 +31,7 @@ by the WhiteboxTools library:
 
 */
 
+
 pub mod algorithms;
 pub mod lidar;
 pub mod raster;
@@ -50,6 +51,10 @@ use std::path;
 #[macro_use]
 extern crate serde_derive;
 
+#[macro_use]
+extern crate clap;
+
+use clap::{App, Arg};
 /// WhiteboxTools is an advanced geospatial data analysis engine.
 ///
 /// # Examples
@@ -94,6 +99,36 @@ fn run() -> Result<(), Error> {
     let mut tool_args_vec: Vec<String> = vec![];
     let mut verbose = false;
     let mut finding_working_dir = false;
+
+    let _matches = App::new("WhiteboxTools")
+        .version(crate_version!())
+        .author("Dr. John Lindsay")
+        .about("WhiteboxTools is an advanced geospatial data analysis platform developed at the University of Guelph's Geomorphometry and Hydrogeomatics Research Group (GHRG)")
+        .arg(Arg::with_name("cd")
+            .visible_alias("wd")
+        ).arg(Arg::with_name("license")
+            .short("l")
+        ).arg(Arg::with_name("listtools")
+            .visible_alias("list_tools")
+        ).arg(Arg::with_name("run")
+            .short("r")
+            .takes_value(true)
+            .multiple(true)
+        ).arg(Arg::with_name("toolbox")
+            .takes_value(true)
+        ).arg(Arg::with_name("toolhelp")
+            .takes_value(true)
+        ).arg(Arg::with_name("toolparameters")
+            .takes_value(true)
+        ).arg(Arg::with_name("verbose")
+            .short("v")
+        ).arg(Arg::with_name("viewcode")
+        ).arg(Arg::with_name("version")
+            .short("V")
+        )
+        .get_matches();
+
+
     let args: Vec<String> = env::args().collect();
     if args.len() <= 1 {
         version();
